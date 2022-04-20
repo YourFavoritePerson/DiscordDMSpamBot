@@ -44,7 +44,7 @@ namespace APX
             Guid ThisThreadsGuid = Guid.NewGuid();
 
             
-            List<Join> Cunts = new List<Join>();
+            List<Join> Gentleman = new List<Join>();
             lock (PreprocessingLock)
             {
                 //add this join to the list
@@ -52,26 +52,28 @@ namespace APX
                 //clear older joins below time threshold.
                 UserList = UserList.Where(o => o.UtcTimestamp > DateTime.UtcNow - TimeSpan.FromSeconds(180)).ToList();
                 int NumJoinsToBan = Convert.ToInt32(_config["Guilds:" + user.Guild.Id + ":NumberOfJoinsToAutoBan"]);
+                bool ExcludeNitroUsers = Convert.ToBoolean(_config["Guilds:" + user.Guild.Id + ":ExcludeNitroUsers"]);
+                int AccountAgeInDays = Convert.ToInt32(_config["Guilds:" + user.Guild.Id + ":AccountAgeInDays"]);
                 if (UserList.Count >= NumJoinsToBan)
                 {
                     //only foreach the people who are not already being processed or have been processed already.    
                     var UsersToCheck = UserList.Where(o => o.processingState == Join.ProcessingState.Unprocessed).ToList();
                     foreach (var userToCheck in UsersToCheck)
                     {
-                        if (!userToCheck.HasNitro && userToCheck.AccountAgeInDays < 10)
+                        if (!ExcludeNitroUsers && userToCheck.AccountAgeInDays < AccountAgeInDays)
                         {
-                            //userToCheck.processingState = Join.ProcessingState.ToBeBanned;
+                            
                             userToCheck.SetToBeBannedFlag(ThisThreadsGuid);
                         }
                     }
                     //if their state is to be banned and the guid matches the guild for this thread, stick them on the ban list.
-                    Cunts = UserList.Where(o => o.processingState == Join.ProcessingState.ToBeBanned && o.guid==ThisThreadsGuid).ToList();
+                    Gentleman = UserList.Where(o => o.processingState == Join.ProcessingState.ToBeBanned && o.guid==ThisThreadsGuid).ToList();
                 }
             }
             //now find the ones marked to be banned in this thread and do it, if any.
-            if (Cunts.Count() > 0)
+            if (Gentleman.Count() > 0)
             {
-                foreach (var scammer in Cunts)
+                foreach (var scammer in Gentleman)
                 {
                     await scammer.Author.BanAsync(0, "Likely DM Scammer", requestOptions);
                     ulong LogChannel = Convert.ToUInt64(_config["Guilds:" + scammer.Author.Guild.Id + ":LogChannel"]);
