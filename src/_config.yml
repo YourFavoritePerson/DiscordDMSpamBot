@@ -1,0 +1,19 @@
+﻿#prefix:   #prod
+#    - au!
+
+prefix: #dev
+   - zd!
+
+
+tokens:
+    #discord: fsdgsdf  #prod
+    discord: bnnbvc  #dev
+
+
+Guilds:
+    30000000000:
+        LogChannel: 333333333333333333333
+        NumberOfJoinsToAutoBan: 15
+    50814895133426641:  
+        LogChannel: 7777777777777777777
+        NumberOfJoinsToAutoBan: 15
