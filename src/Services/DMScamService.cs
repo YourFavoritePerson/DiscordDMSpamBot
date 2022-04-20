@@ -50,10 +50,11 @@ namespace APX
                 //add this join to the list
                 UserList.Add(new Join(user, DateTime.UtcNow));
                 //clear older joins below time threshold.
-                UserList = UserList.Where(o => o.UtcTimestamp > DateTime.UtcNow - TimeSpan.FromSeconds(180)).ToList();
                 int NumJoinsToBan = Convert.ToInt32(_config["Guilds:" + user.Guild.Id + ":NumberOfJoinsToAutoBan"]);
                 bool ExcludeNitroUsers = Convert.ToBoolean(_config["Guilds:" + user.Guild.Id + ":ExcludeNitroUsers"]);
                 int AccountAgeInDays = Convert.ToInt32(_config["Guilds:" + user.Guild.Id + ":AccountAgeInDays"]);
+                int SecondsTillJoinExpires = Convert.ToInt32(_config["Guilds:" + user.Guild.Id + ":SecondsTillJoinExpires"]);
+                UserList = UserList.Where(o => o.UtcTimestamp > DateTime.UtcNow - TimeSpan.FromSeconds(SecondsTillJoinExpires)).ToList();
                 if (UserList.Count >= NumJoinsToBan)
                 {
                     //only foreach the people who are not already being processed or have been processed already.    

@@ -7,7 +7,7 @@ prefix: #dev
 
 tokens:
     #discord: fsdgsdf  #prod
-    discord: bnnbvc  #dev
+    discord: bnnbvcfdafdasfdasfdasfase4  #dev
 
 
 Guilds:
@@ -16,8 +16,10 @@ Guilds:
         NumberOfJoinsToAutoBan: 15
         ExcludeNitroUsers: 1
         AccountAgeInDays: 10
+        SecondsTillJoinExpires: 180
     50814895133426641:  
         LogChannel: 7777777777777777777
         NumberOfJoinsToAutoBan: 15
         ExcludeNitroUsers: 1
         AccountAgeInDays: 10
+        SecondsTillJoinExpires: 180
